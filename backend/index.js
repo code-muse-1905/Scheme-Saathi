@@ -2,8 +2,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
+import authRoutes from "./routes/authRoutes.js";
 
-dotenv.config();//now there is no need of this because we are importing all the env variable in config.js file only
+//dotenv.config();//now there is no need of this because we are importing all the env variable in config.js file only
 connectDB();
 
 const app = express();
@@ -11,6 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/auth", authRoutes);
 
 app.get('/',(req,res) => {
     res.send('Scheme Saathi backend is running');
