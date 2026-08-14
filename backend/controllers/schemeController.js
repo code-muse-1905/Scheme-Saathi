@@ -33,3 +33,52 @@ export const createScheme = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+export const getAllSchemes = async (req, res) => {
+  try {
+    const schemes = await Scheme.find();
+    res.status(200).json({ count: schemes.length, schemes });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+export const getSchemeById = async (req, res) => {
+  try {
+    const scheme = await Scheme.findById(req.params.id);
+    if (!scheme) {
+      return res.status(404).json({ message: 'Scheme not found' });
+    }
+    res.status(200).json({ scheme });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+export const updateScheme = async (req, res) => {
+  try {
+    const scheme = await Scheme.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!scheme) {
+      return res.status(404).json({ message: 'Scheme not found' });
+    }
+
+    res.status(200).json({ scheme });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+export const deleteScheme = async (req, res) => {
+  try {
+    const scheme = await Scheme.findByIdAndDelete(req.params.id);
+
+    if (!scheme) {
+      return res.status(404).json({ message: 'Scheme not found' });
+    }
+
+    res.status(200).json({ message: 'Scheme deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
