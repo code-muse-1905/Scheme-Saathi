@@ -1,4 +1,32 @@
 import Scheme from '../models/Scheme.js';
+import Profile from "../models/Profile.js";
+import { checkEligibility } from "../utils/eligibilityEngine.js";
+
+export const getEligibleSchemes = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ userId: req.user.id });
+
+    if (!profile) {
+      return res.status(404).json({ message: "Please complete your profile first." });
+    }
+
+    const allSchemes = await Scheme.find();
+
+    const eligibleSchemes = allSchemes
+      .map((scheme) => {
+        const result = checkEligibility(profile, scheme);
+        return { scheme, ...result };
+      })
+      .filter((result) => result.eligible);
+
+    res.status(200).json({
+      count: eligibleSchemes.length,
+      schemes: eligibleSchemes.map((r) => r.scheme),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 export const createScheme = async (req, res) => {
   try {
