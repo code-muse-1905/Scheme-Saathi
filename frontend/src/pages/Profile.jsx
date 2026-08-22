@@ -34,7 +34,7 @@ function Profile() {
           category: data.category || '',
           disabilityStatus: data.disabilityStatus || false,
         })
-      } catch (err) {
+      } catch {
         // No profile yet is fine — form just stays empty
       } finally {
         setLoading(false)
