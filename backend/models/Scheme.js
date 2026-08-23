@@ -45,6 +45,10 @@ const schemeSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    documentsRequired: {
+   type: [String],
+   default: [],
+},
   },
   { timestamps: true }
 );

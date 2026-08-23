@@ -5,10 +5,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Profile from './pages/Profile'
 import AdminPanel from './pages/AdminPanel'
-
-function Dashboard() {
-  return <h1 className="p-8 text-2xl">Dashboard (protected)</h1>
-}
+import Dashboard from './pages/Dashboard'
 
 function App() {
   return (
