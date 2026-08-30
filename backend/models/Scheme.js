@@ -49,6 +49,22 @@ const schemeSchema = new mongoose.Schema(
    type: [String],
    default: [],
 },
+benefits: {
+      type: String,
+      default: '',
+    },
+    applicationUrl: {
+      type: String,
+      default: '',
+    },
+        applicationProcess: {
+      type: String,
+      default: '',
+    },
+    importantInfo: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );

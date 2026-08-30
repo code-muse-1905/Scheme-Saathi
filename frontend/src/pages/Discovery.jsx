@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Search, SlidersHorizontal, X, Building2, FileText } from 'lucide-react'
 import { getAllSchemes } from '../api/schemes'
+import { Link } from 'react-router-dom'
 
 const STATES = [
   "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
@@ -167,13 +168,13 @@ function Discovery() {
               <p className="text-sm text-gray-500 mb-4">{filteredSchemes.length} schemes found</p>
               <div className="space-y-4">
                 {filteredSchemes.map((scheme) => (
-                  <div key={scheme._id} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                  <Link key={scheme._id} to={`/schemes/${scheme._id}`} className="block bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                     <h3 className="font-semibold text-navy-950 mb-1">{scheme.schemeName}</h3>
                     <p className="text-xs text-gray-400 flex items-center gap-1 mb-2">
                       <Building2 size={12} /> {scheme.provider}
                     </p>
                     <p className="text-sm text-gray-600">{scheme.description}</p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </>

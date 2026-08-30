@@ -9,6 +9,8 @@ import Dashboard from './pages/Dashboard'
 import Navbar from './components/Navbar'
 import Landing from './pages/Landing'
 import Discovery from './pages/Discovery'
+import SchemeDetails from "./pages/SchemeDetails"
+import Documents from './pages/Documents'
 
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute> }/>
           <Route path="/schemes" element={<Discovery />} />
           <Route path="/" element={<Landing />} />
+          <Route path="/schemes/:id" element={<SchemeDetails />} />
+          <Route path="/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

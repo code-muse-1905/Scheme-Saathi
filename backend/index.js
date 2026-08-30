@@ -5,6 +5,8 @@ import connectDB from './config/db.js';
 import authRoutes from "./routes/authRoutes.js";
 import schemeRoutes from "./routes/schemeRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
+import applicationRoutes from './routes/applicationRoutes.js';
+import documentRoutes from './routes/documentRoutes.js';
 
 //dotenv.config();//now there is no need of this because we are importing all the env variable in config.js file only
 connectDB();
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/schemes", schemeRoutes);
 app.use("/api/profile", profileRoutes);
+app.use('/api/applications', applicationRoutes);
+app.use('/api/documents', documentRoutes);
 
 app.get('/',(req,res) => {
     res.send('Scheme Saathi backend is running');
@@ -24,6 +28,11 @@ app.get('/',(req,res) => {
 
 app.get('/api/ping', (req, res) => {
     res.json({ status: 'ok' });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: err.message || 'Something went wrong' });
 });
 
 app.listen(PORT, () => {

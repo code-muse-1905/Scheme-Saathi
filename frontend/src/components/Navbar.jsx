@@ -18,6 +18,7 @@ function Navbar() {
 
   const navLinks = [
     { to: '/dashboard', label: 'Dashboard' },
+    { to: '/documents', label: 'Documents' },
     { to: '/profile', label: 'Profile' },
     { to: '/admin', label: 'Admin' },
   ]
