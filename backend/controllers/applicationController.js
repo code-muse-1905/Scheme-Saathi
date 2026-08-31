@@ -50,10 +50,12 @@ export async function updateApplication(req, res) {
     }
 
     const { status, reminderDate, notes } = req.body;
-    if (status !== undefined) application.status = status;
-    if (reminderDate !== undefined) application.reminderDate = reminderDate;
+       if (status !== undefined) application.status = status;
+    if (reminderDate !== undefined) {
+      application.reminderDate = reminderDate;
+      application.reminderSentAt = null; // reset so a new/changed date can trigger again
+    }
     if (notes !== undefined) application.notes = notes;
-
     await application.save();
     res.status(200).json(application);
   } catch (err) {

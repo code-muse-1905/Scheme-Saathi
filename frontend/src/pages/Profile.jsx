@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { CalendarDays, IndianRupee, MapPin, Briefcase, Users, CheckCircle2, Loader2 } from 'lucide-react'
+import { CalendarDays, IndianRupee, MapPin, Briefcase, Users, CheckCircle2, Loader2, Sparkles } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
-import { getMyProfile, saveMyProfile } from '../api/profile'
+import { getMyProfile, saveMyProfile, extractProfile } from '../api/profile'
 
 const STATES = [
   "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
@@ -33,6 +33,11 @@ function Profile() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
+  const [nlpText, setNlpText] = useState('')
+  const [extracting, setExtracting] = useState(false)
+  const [extractMessage, setExtractMessage] = useState('')
+  const [filledFields, setFilledFields] = useState([])
+
   useEffect(() => {
     async function loadProfile() {
       try {
@@ -57,6 +62,57 @@ function Profile() {
   function handleChange(e) {
     const { name, value, type, checked } = e.target
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
+  }
+  async function handleExtract() {
+    if (!nlpText.trim()) return
+    setExtracting(true)
+    setExtractMessage('')
+    setFilledFields([])
+    try {
+      const extracted = await extractProfile(token, nlpText)
+      const filled = []
+      const updates = {}
+
+      if (typeof extracted.age === 'number') {
+        const birthYear = new Date().getFullYear() - extracted.age
+        updates.dateOfBirth = `${birthYear}-01-01`
+        filled.push('Date of Birth (approximated from age — please verify)')
+      }
+      if (typeof extracted.income === 'number') {
+        updates.income = extracted.income
+        filled.push('Annual Income')
+      }
+      if (extracted.state && STATES.includes(extracted.state)) {
+        updates.state = extracted.state
+        filled.push('State')
+      }
+      if (extracted.occupation && OCCUPATIONS.includes(extracted.occupation)) {
+        updates.occupation = extracted.occupation
+        filled.push('Occupation')
+      }
+      if (extracted.category && CATEGORIES.includes(extracted.category)) {
+        updates.category = extracted.category
+        filled.push('Category')
+      }
+      if (typeof extracted.disabilityStatus === 'boolean') {
+        updates.disabilityStatus = extracted.disabilityStatus
+      }
+
+      if (Object.keys(updates).length > 0) {
+        setForm((prev) => ({ ...prev, ...updates }))
+      }
+
+      setFilledFields(filled)
+      if (filled.length === 0) {
+        setExtractMessage("Couldn't find any usable details in that text — try adding more specifics.")
+      } else {
+        setExtractMessage('Fields below have been filled in — please review before saving.')
+      }
+    } catch (err) {
+      setExtractMessage(err.message)
+    } finally {
+      setExtracting(false)
+    }
   }
 
   async function handleSubmit(e) {
@@ -90,7 +146,45 @@ function Profile() {
   return (
     <div className="max-w-2xl mx-auto p-6 sm:p-8">
       <h1 className="text-2xl font-bold text-navy-950 mb-1">My Profile</h1>
-      <p className="text-gray-500 mb-8">Used to match you against real scheme eligibility criteria.</p>
+      <p className="text-gray-500 mb-6">Used to match you against real scheme eligibility criteria.</p>
+
+      {/* NLP-assisted fill */}
+      <div className="bg-navy-50 border border-navy-100 rounded-2xl p-5 mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <Sparkles size={16} className="text-saffron-600" />
+          <h2 className="text-sm font-semibold text-navy-900">Fill using a short description</h2>
+        </div>
+        <p className="text-xs text-gray-500 mb-3">
+          Describe yourself in a sentence or two, and we'll try to fill in the form below. You can review and edit everything before saving.
+        </p>
+        <textarea
+          value={nlpText}
+          onChange={(e) => setNlpText(e.target.value)}
+          placeholder="e.g. I am a 22 year old student from Odisha, my family's annual income is around 3 lakh rupees, and I belong to the OBC category."
+          rows={3}
+          className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-navy-900/10 focus:border-navy-900"
+        />
+        <button
+          type="button"
+          onClick={handleExtract}
+          disabled={extracting || !nlpText.trim()}
+          className="flex items-center justify-center gap-2 bg-navy-900 hover:bg-navy-800 disabled:opacity-50 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+        >
+          {extracting && <Loader2 size={14} className="animate-spin" />}
+          {extracting ? 'Extracting...' : 'Fill Form with AI'}
+        </button>
+
+        {extractMessage && (
+          <p className={`text-xs mt-3 ${filledFields.length > 0 ? 'text-navy-700' : 'text-red-500'}`}>
+            {extractMessage}
+          </p>
+        )}
+        {filledFields.length > 0 && (
+          <ul className="text-xs text-gray-500 mt-2 list-disc list-inside">
+            {filledFields.map((f) => <li key={f}>{f}</li>)}
+          </ul>
+        )}
+      </div>
 
       {message && (
         <div className={`flex items-center gap-2 text-sm rounded-lg px-3.5 py-2.5 mb-6 ${

@@ -7,6 +7,7 @@ import schemeRoutes from "./routes/schemeRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import applicationRoutes from './routes/applicationRoutes.js';
 import documentRoutes from './routes/documentRoutes.js';
+import { startReminderCron } from './cron/reminderCron.js';
 
 //dotenv.config();//now there is no need of this because we are importing all the env variable in config.js file only
 connectDB();
@@ -38,3 +39,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+startReminderCron();

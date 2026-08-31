@@ -22,3 +22,16 @@ export async function saveMyProfile(token, profileData) {
   if (!response.ok) throw new Error(data.message || 'Failed to save profile')
   return data
 }
+export async function extractProfile(token, text) {
+  const response = await fetch(`${API_URL}/extract`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ text }),
+  })
+  const data = await response.json()
+  if (!response.ok) throw new Error(data.message || 'Failed to extract profile')
+  return data
+}

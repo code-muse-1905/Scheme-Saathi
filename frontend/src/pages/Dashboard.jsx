@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { FileCheck, UserCircle, AlertCircle, Building2, Bookmark, Trash2 } from 'lucide-react'
+import { FileCheck, UserCircle, AlertCircle, Building2, Bookmark, Trash2, Bell } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { getEligibleSchemes } from '../api/eligibility'
 import { getMyProfile } from '../api/profile'
@@ -65,6 +65,15 @@ function Dashboard() {
   async function handleStatusChange(appId, newStatus) {
     try {
       const updated = await updateApplicationStatus(token, appId, { status: newStatus })
+      setApplications((prev) => prev.map((a) => (a._id === appId ? updated : a)))
+    } catch (err) {
+      setAppsError(err.message)
+    }
+  }
+
+    async function handleReminderChange(appId, newDate) {
+    try {
+      const updated = await updateApplicationStatus(token, appId, { reminderDate: newDate || null })
       setApplications((prev) => prev.map((a) => (a._id === appId ? updated : a)))
     } catch (err) {
       setAppsError(err.message)
@@ -138,6 +147,15 @@ function Dashboard() {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
+                                    <div className="flex items-center gap-1" title="Set a reminder date">
+                    <Bell size={13} className="text-gray-300" />
+                    <input
+                      type="date"
+                      value={app.reminderDate ? app.reminderDate.slice(0, 10) : ''}
+                      onChange={(e) => handleReminderChange(app._id, e.target.value)}
+                      className="text-xs border border-gray-200 rounded-md px-1.5 py-1 focus:outline-none focus:ring-1 focus:ring-navy-900/20"
+                    />
+                  </div>
                   <select
                     value={app.status}
                     onChange={(e) => handleStatusChange(app._id, e.target.value)}

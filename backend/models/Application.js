@@ -21,11 +21,16 @@ const applicationSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    reminderSentAt: {
+     type: Date,
+     default: null,
+    },
     notes: {
       type: String,
       default: '',
       trim: true,
     },
+
   },
   { timestamps: true }
 );
