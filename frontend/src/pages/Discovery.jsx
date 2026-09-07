@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Search, SlidersHorizontal, X, Building2, FileText } from 'lucide-react'
+import { Search, SlidersHorizontal, X, Building2, FileText ,ShieldCheck } from 'lucide-react'
 import { getAllSchemes } from '../api/schemes'
 import { Link } from 'react-router-dom'
 
@@ -169,7 +169,14 @@ function Discovery() {
               <div className="space-y-4">
                 {filteredSchemes.map((scheme) => (
                   <Link key={scheme._id} to={`/schemes/${scheme._id}`} className="block bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-                    <h3 className="font-semibold text-navy-950 mb-1">{scheme.schemeName}</h3>
+                                      <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-navy-950">{scheme.schemeName}</h3>
+                      {scheme.verified && (
+                        <span className="flex items-center gap-1 text-xs font-medium bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full shrink-0">
+                          <ShieldCheck size={11} /> Verified
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-gray-400 flex items-center gap-1 mb-2">
                       <Building2 size={12} /> {scheme.provider}
                     </p>
