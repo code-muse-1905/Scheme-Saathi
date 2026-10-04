@@ -3,6 +3,7 @@ import { Plus, Pencil, Trash2, X, ShieldAlert, ShieldCheck, Loader2, LayoutGrid,
 import { useAuth } from '../context/AuthContext'
 import { getAllSchemes, createScheme, updateScheme, deleteScheme } from '../api/schemes'
 import { getAllReports, updateReportStatus } from '../api/reports'
+import { Link } from 'react-router-dom'
 
 const emptyForm = {
   schemeName: '', description: '', provider: '',
@@ -154,14 +155,19 @@ function AdminPanel() {
     <div className="max-w-5xl mx-auto p-6 sm:p-8">
       <div className="flex items-center justify-between mb-1">
         <h1 className="text-2xl font-bold text-navy-950">Admin Panel</h1>
-        {!showForm && (
-          <button
-            onClick={() => setShowForm(true)}
-            className="flex items-center gap-1.5 bg-navy-900 hover:bg-navy-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-          >
-            <Plus size={16} /> New Scheme
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          <Link to="/admin/analytics" className="text-sm font-medium text-navy-700 hover:underline">
+            View Analytics →
+          </Link>
+          {!showForm && (
+            <button
+              onClick={() => setShowForm(true)}
+              className="flex items-center gap-1.5 bg-navy-900 hover:bg-navy-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            >
+              <Plus size={16} /> New Scheme
+            </button>
+          )}
+        </div>
       </div>
       <p className="text-gray-500 mb-6">Manage government schemes and eligibility rules.</p>
 

@@ -11,6 +11,7 @@ import Landing from './pages/Landing'
 import Discovery from './pages/Discovery'
 import SchemeDetails from "./pages/SchemeDetails"
 import Documents from './pages/Documents'
+import Analytics from './pages/Analytics'
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/schemes/:id" element={<SchemeDetails />} />
           <Route path="/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
+          <Route path="/admin/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

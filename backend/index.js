@@ -9,6 +9,7 @@ import applicationRoutes from './routes/applicationRoutes.js';
 import documentRoutes from './routes/documentRoutes.js';
 import { startReminderCron } from './cron/reminderCron.js';
 import reportRoutes from './routes/reportRoutes.js';
+import analyticsRoutes from './routes/analyticsRoutes.js';
 
 //dotenv.config();//now there is no need of this because we are importing all the env variable in config.js file only
 connectDB();
@@ -24,6 +25,7 @@ app.use("/api/profile", profileRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.get('/',(req,res) => {
     res.send('Scheme Saathi backend is running');
