@@ -10,7 +10,7 @@ import documentRoutes from './routes/documentRoutes.js';
 import { startReminderCron } from './cron/reminderCron.js';
 import reportRoutes from './routes/reportRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
-
+import config from './config/config.js';
 //dotenv.config();//now there is no need of this because we are importing all the env variable in config.js file only
 connectDB();
 
