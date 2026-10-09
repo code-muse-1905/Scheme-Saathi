@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api/schemes'
+const API_URL = `${import.meta.env.VITE_API_URL}/api/schemes`
 
 export async function getAllSchemes() {
   const response = await fetch(API_URL)

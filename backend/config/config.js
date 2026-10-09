@@ -33,6 +33,7 @@ const config = {
     CLOUDINARY_API_SECRET : process.env.CLOUDINARY_API_SECRET,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     BREVO_API_KEY : process.env.BREVO_API_KEY,
-    BREVO_SENDER_EMAIL : process.env.BREVO_SENDER_EMAIL
+    BREVO_SENDER_EMAIL : process.env.BREVO_SENDER_EMAIL,
+    CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
 }
 export default config;

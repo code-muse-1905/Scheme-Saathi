@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api/documents'
+const API_URL = `${import.meta.env.VITE_API_URL}/api/documents`
 
 export async function uploadDocument(token, docType, file) {
   const formData = new FormData()

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api/analytics'
+const API_URL = `${import.meta.env.VITE_API_URL}/api/analytics`
 
 export async function getAnalytics(token) {
   const response = await fetch(API_URL, {
